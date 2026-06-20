@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<title>Kyfesto Cafe — your colourful corner in C-Scheme, Jaipur</title>
+<meta name="description" content="Kyfesto Cafe, C-Scheme Jaipur. Specialty coffee, brunch, Italian, Mexican & Lebanese plates. Colourful, plant-filled, indoor & open-air." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --coral:#e8632e; --coral-d:#cb4f1f; --leaf:#5e9b5e; --teal:#2aa6a0; --sun:#f2a93a; --pink:#e06a8b;
+  --bg:#fcf7ee; --bg-2:#f4ecdc; --surface:#ffffff; --text:#3e342a; --text-dim:#897c6b; --heading:#241c15; --border:#ece0cd;
+  --nav-bg:rgba(252,247,238,.85); --ph:#e7d8bf;
+  --sans:"Inter",system-ui,sans-serif; --display:"Poppins",var(--sans);
+  --maxw:1180px; --ease:cubic-bezier(.22,.61,.36,1); --r:22px; --r-sm:14px;
+  --shadow:0 22px 50px -28px rgba(70,45,20,.4); --shadow-sm:0 10px 26px -16px rgba(70,45,20,.3);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#181410; --bg-2:#211b14; --surface:#241d16; --text:#efe6d8; --text-dim:#a99c8a; --heading:#f8f1e5; --border:#382e22;
+    --nav-bg:rgba(20,16,11,.9); --ph:#2c2319;
+    --coral:#f0794a; --leaf:#82bd82; --teal:#46c3bd; --sun:#f6bd5e; --pink:#ef88a6;
+    --shadow:0 22px 50px -26px rgba(0,0,0,.72); --shadow-sm:0 10px 26px -16px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);color:var(--text);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,iframe{max-width:100%;display:block}
+a{color:var(--coral);text-decoration:none;transition:color .2s var(--ease)}
+a:hover{color:var(--coral-d)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.08;letter-spacing:-.02em;color:var(--heading);overflow-wrap:break-word}
+.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);font-weight:700;margin-bottom:.8rem}
+.lede{color:var(--text-dim);font-size:clamp(1rem,2.4vw,1.1rem)}
+.note{margin-top:1.8rem;text-align:center;color:var(--text-dim);font-size:.9rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;font-family:var(--sans);font-weight:600;font-size:.95rem;padding:.85rem 1.6rem;border-radius:999px;cursor:pointer;border:2px solid transparent;transition:transform .25s var(--ease),box-shadow .25s,background .2s,color .2s,border-color .2s}
+.btn--fill{background:var(--coral);color:#fff;box-shadow:0 12px 26px -12px rgba(232,99,46,.7)}
+.btn--fill:hover{background:var(--coral-d);color:#fff;transform:translateY(-2px);box-shadow:0 18px 34px -12px rgba(232,99,46,.85)}
+.btn--soft{background:transparent;border-color:var(--border);color:var(--heading)}
+.btn--soft:hover{border-color:var(--coral);color:var(--coral);transform:translateY(-2px)}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem clamp(1.1rem,4vw,1.7rem);transition:background .35s var(--ease),padding .35s,box-shadow .35s}
+.nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(14px);padding:.6rem clamp(1.1rem,4vw,1.7rem);box-shadow:0 8px 24px -20px rgba(70,45,20,.5)}
+.brand{font-family:var(--display);font-size:clamp(1.2rem,4vw,1.4rem);font-weight:800;color:var(--heading);display:flex;align-items:center;gap:.45em}
+.brand b{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--coral),var(--sun));color:#fff;display:grid;place-items:center;font-size:1rem;font-weight:800}
+.links{display:flex;gap:1.8rem}
+.links a{font-size:.92rem;font-weight:500;color:var(--text);position:relative}
+.links a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;background:var(--coral);border-radius:2px;transition:width .3s var(--ease)}
+.links a:hover{color:var(--coral)}.links a:hover::after{width:100%}
+.nav__cta{padding:.55rem 1.25rem}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px}
+.burger span{width:24px;height:2px;background:var(--heading);border-radius:2px;transition:.3s var(--ease)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.navm{position:fixed;top:56px;left:0;right:0;z-index:99;display:flex;flex-direction:column;gap:1.1rem;align-items:flex-start;padding:0 1.7rem;max-height:0;overflow:hidden;background:var(--nav-bg);backdrop-filter:blur(14px);transition:max-height .4s var(--ease),padding .4s}
+.navm.open{max-height:340px;padding:1.3rem 1.7rem 1.8rem}
+.navm a{color:var(--text);font-weight:500}
+
+.hero{max-width:var(--maxw);margin:0 auto;padding:7.5rem clamp(1.1rem,5vw,1.7rem) 3rem;display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(1.6rem,4vw,3rem);align-items:center}
+.hero__text .tagline{display:inline-flex;align-items:center;gap:.5em;background:linear-gradient(135deg,var(--coral),var(--sun));color:#fff;font-weight:600;font-size:.8rem;padding:.42rem .95rem;border-radius:999px;margin-bottom:1.2rem}
+.hero__text h1{font-size:clamp(2.5rem,7vw,4.5rem);margin-bottom:1.1rem;color:var(--heading)}
+.hero__text h1 span{background:linear-gradient(120deg,var(--coral),var(--pink),var(--sun));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--coral)}
+.hero__text p{font-size:clamp(1.02rem,2.4vw,1.2rem);color:var(--text-dim);max-width:42ch;margin-bottom:1.8rem}
+.hero__actions{display:flex;gap:.8rem;flex-wrap:wrap}
+.hero__chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.6rem}
+.chip{font-size:.8rem;font-weight:500;color:var(--text-dim);background:var(--surface);border:1px solid var(--border);padding:.4rem .85rem;border-radius:999px}
+.chip b{color:var(--heading)}
+.hero__media{position:relative;height:clamp(360px,52vw,520px)}
+.hero__media .ph{position:absolute;border-radius:var(--r);background:var(--ph) center/cover no-repeat;box-shadow:var(--shadow);overflow:hidden}
+.hero__media .p1{inset:0 22% 26% 0;animation:float1 7s var(--ease) infinite}
+.hero__media .p2{width:46%;height:46%;right:0;top:14%;animation:float2 8s var(--ease) infinite}
+.hero__media .p3{width:40%;height:34%;right:10%;bottom:0;animation:float1 9s var(--ease) infinite}
+.hero__media .badge{position:absolute;left:-2%;bottom:8%;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:.6rem;z-index:3}
+.hero__media .badge b{font-family:var(--display);color:var(--heading);font-size:1.1rem}
+.hero__media .badge small{color:var(--text-dim);font-size:.72rem;line-height:1.2}
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+.fade{animation:fadeUp .8s var(--ease) backwards}
+.fade.d1{animation-delay:.08s}.fade.d2{animation-delay:.16s}.fade.d3{animation-delay:.24s}.fade.d4{animation-delay:.32s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.section{max-width:var(--maxw);margin:0 auto;padding:clamp(3.4rem,8vw,5.5rem) clamp(1.1rem,5vw,1.4rem)}
+.head{max-width:60ch;margin:0 auto 2.4rem;text-align:center}
+.head h2{font-size:clamp(1.9rem,5vw,2.8rem);margin-bottom:.5rem}
+.cat{font-size:1.2rem;color:var(--heading);font-weight:700;font-family:var(--display);margin:1.6rem 0 1.1rem;display:flex;align-items:center;gap:.5rem}
+.cat::before{content:"";width:22px;height:4px;border-radius:4px;background:var(--coral)}
+
+.space__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,3rem);align-items:center}
+.space__imgs{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.space__imgs .im{border-radius:var(--r);background:var(--ph) center/cover no-repeat;box-shadow:var(--shadow-sm);height:clamp(190px,26vw,290px);transition:transform .5s var(--ease)}
+.space__imgs .im:hover{transform:scale(1.02)}
+.space__imgs .im.tall{grid-row:span 2;height:auto;min-height:clamp(300px,42vw,460px)}
+.space__t h2{font-size:clamp(1.7rem,4.6vw,2.6rem);margin-bottom:.9rem}
+.space__t p{color:var(--text);margin-bottom:1rem}
+.space__t .mini{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem}
+.tag{font-size:.8rem;font-weight:600;color:#fff;padding:.35rem .8rem;border-radius:999px}
+.tag.t1{background:var(--leaf)}.tag.t2{background:var(--teal)}.tag.t3{background:var(--pink)}.tag.t4{background:var(--sun)}
+
+.peek{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:1rem;overflow-x:auto;padding:.4rem .2rem 1.2rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.peek::-webkit-scrollbar{height:6px}.peek::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px}
+.peek .pc{scroll-snap-align:start;border-radius:var(--r-sm);overflow:hidden;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.peek .pc .img{height:180px;background:var(--ph) center/cover no-repeat;transition:transform .5s var(--ease)}
+.peek .pc:hover .img{transform:scale(1.05)}
+.peek .pc .cap{padding:.8rem 1rem}
+.peek .pc h4{font-size:1.02rem;margin-bottom:.15rem}
+.peek .pc small{color:var(--text-dim)}
+
+.menu__grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.dish{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:1.1rem 1.2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;transition:transform .25s var(--ease),box-shadow .3s,border-color .25s}
+.dish:hover{transform:translateY(-3px);border-color:var(--coral);box-shadow:var(--shadow-sm)}
+.dish h4{font-size:1.06rem;margin-bottom:.2rem}
+.dish p{font-size:.85rem;color:var(--text-dim)}
+.dish .t{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);font-weight:700;white-space:nowrap;margin-top:.2rem}
+
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(150px,18vw,190px);gap:.8rem}
+.g{background:var(--ph) center/cover no-repeat;border-radius:var(--r-sm);overflow:hidden;transition:transform .4s var(--ease),filter .4s;filter:saturate(1.05)}
+.g:hover{transform:scale(1.03);filter:saturate(1.18) brightness(1.05);z-index:2}
+.g.w2{grid-column:span 2}.g.h2{grid-row:span 2}
+.ig{display:flex;justify-content:center;margin-top:1.6rem}
+
+.reserve{display:grid;grid-template-columns:.9fr 1.25fr;gap:clamp(1.6rem,4vw,2.4rem);align-items:start;background:linear-gradient(135deg,var(--bg-2),var(--surface));border:1px solid var(--border);border-radius:var(--r);padding:clamp(1.6rem,4vw,2.6rem);box-shadow:var(--shadow-sm)}
+.reserve h2{font-size:clamp(1.6rem,4.6vw,2.1rem);margin-bottom:.5rem}
+.reserve__intro p{color:var(--text-dim)}
+.rform{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.field{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.field label{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-dim);font-weight:600}
+.field label span{text-transform:none;font-weight:400}
+.field input,.field select{font-family:var(--sans);font-size:1rem;padding:.7rem .8rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:100%;transition:border .2s,box-shadow .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--coral);box-shadow:0 0 0 3px rgba(232,99,46,.18)}
+.sub{grid-column:1/-1;margin-top:.3rem}
+.fallback{grid-column:1/-1;text-align:center;font-size:.85rem;color:var(--text-dim)}
+
+.visit{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(1.6rem,4vw,2.4rem);text-align:left}
+.row{padding:.95rem 0;border-bottom:1px solid var(--border)}
+.row:last-child{border-bottom:0}
+.row h4{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);font-family:var(--sans);font-weight:700;margin-bottom:.35rem}
+.row p{color:var(--text)}
+.map{border-radius:var(--r);overflow:hidden;min-height:clamp(280px,40vw,380px);box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+.map iframe{width:100%;height:100%;min-height:clamp(280px,40vw,380px);border:0}
+
+.footer{background:var(--bg-2);border-top:1px solid var(--border);text-align:center;padding:3.2rem 1.4rem}
+.footer__brand{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--heading)}
+.footer__brand span{color:var(--coral)}
+.footer__tag{color:var(--text-dim);margin:.5rem 0 1rem}
+.footer__meta{font-size:.84rem;color:var(--text-dim);margin-bottom:.7rem;overflow-wrap:break-word}
+.footer__copy{font-size:.76rem;color:var(--text-dim);opacity:.7}
+
+.actionbar{display:none}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(150%);z-index:500;background:var(--heading);color:var(--bg);padding:.85rem 1.4rem;border-radius:999px;box-shadow:var(--shadow);font-size:.9rem;transition:transform .5s var(--ease);max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* colourful fallbacks: a blocked/slow image becomes an on-brand panel, never a blank box */
+.hero__media .p1{background-color:#e8632e}
+.hero__media .p2{background-color:#2aa6a0}
+.hero__media .p3{background-color:#e06a8b}
+.space__imgs .im:nth-child(1){background-color:#e8632e}
+.space__imgs .im:nth-child(2){background-color:#5e9b5e}
+.space__imgs .im:nth-child(3){background-color:#2aa6a0}
+.peek .pc:nth-child(1) .img{background-color:#e8632e}
+.peek .pc:nth-child(2) .img{background-color:#5e9b5e}
+.peek .pc:nth-child(3) .img{background-color:#e06a8b}
+.peek .pc:nth-child(4) .img{background-color:#f2a93a}
+.peek .pc:nth-child(5) .img{background-color:#2aa6a0}
+.gallery .g:nth-child(1){background-color:#e8632e}
+.gallery .g:nth-child(2){background-color:#5e9b5e}
+.gallery .g:nth-child(3){background-color:#2aa6a0}
+.gallery .g:nth-child(4){background-color:#e06a8b}
+.gallery .g:nth-child(5){background-color:#f2a93a}
+.gallery .g:nth-child(6){background-color:#5e9b5e}
+.gallery .g:nth-child(7){background-color:#2aa6a0}
+
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;padding-top:6.5rem}
+  .hero__media{height:clamp(320px,70vw,420px);max-width:520px;margin:0 auto}
+  .space__grid,.visit,.reserve{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:680px){
+  .links,.nav__cta{display:none}
+  .burger{display:flex}
+  .nav{background:var(--nav-bg);backdrop-filter:blur(14px)}
+  .menu__grid{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px}
+  .rform{grid-template-columns:1fr}
+  body{padding-bottom:66px}
+  .actionbar{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--surface);border-top:1px solid var(--border);box-shadow:0 -8px 24px -18px rgba(0,0,0,.4);padding-bottom:env(safe-area-inset-bottom)}
+  .actionbar a{color:var(--heading);text-align:center;padding:.95rem .5rem;font-size:.9rem;font-weight:600;border-right:1px solid var(--border)}
+  .actionbar a:last-child{border-right:0}
+  .actionbar a:first-child{background:var(--coral);color:#fff}
+}
+@media(max-width:480px){
+  .hero__actions{flex-direction:column;align-items:stretch}
+  .hero__actions .btn{width:100%}
+  .space__imgs{grid-template-columns:1fr}
+  .space__imgs .im,.space__imgs .im.tall{height:230px;min-height:0;grid-row:auto}
+  .gallery{grid-template-columns:1fr;grid-auto-rows:230px}
+  .g.w2,.g.h2{grid-column:auto;grid-row:auto}
+  .hero__media .badge{left:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a href="#top" class="brand"><b>K</b>Kyfesto</a>
+  <nav class="links"><a href="#space">The Space</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#visit">Visit</a></nav>
+  <a href="#reserve" class="btn btn--fill nav__cta">Reserve</a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<nav class="navm" id="navm">
+  <a href="#space">The Space</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#visit">Visit</a>
+  <a href="#reserve" class="btn btn--fill">Reserve</a>
+</nav>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero__text">
+      <span class="tagline fade">☕ C-Scheme, Jaipur · since 2024</span>
+      <h1 class="fade d1">A colourful little <span>escape.</span></h1>
+      <p class="fade d2">Specialty coffee, all-day brunch and gourmet plates surrounded by murals, plants and good music — indoor and open-air. Come work, catch up, or just slow down.</p>
+      <div class="hero__actions fade d3">
+        <a href="#reserve" class="btn btn--fill">Reserve a table</a>
+        <a href="#menu" class="btn btn--soft">Peek the menu</a>
+      </div>
+      <div class="hero__chips fade d4">
+        <span class="chip"><b>4.6★</b> · 800+ reviews</span>
+        <span class="chip"><b>#1</b> cafe in C-Scheme</span>
+        <span class="chip">Specialty coffee</span>
+        <span class="chip">Indoor + open-air</span>
+      </div>
+    </div>
+    <div class="hero__media fade d2">
+      <div class="ph p1" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/be5e2d0b113f4a4ea3477b3ffc1f7913.jpeg')"></div>
+      <div class="ph p2" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/124d78905ab6b4ffb762d17c223203ec.jpeg')"></div>
+      <div class="ph p3" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/72d009f6cad4233920136128e489ddb8.jpeg')"></div>
+      <div class="badge"><b>4.6★</b><small>Loved on Zomato<br/>&amp; Tripadvisor</small></div>
+    </div>
+  </section>
+
+  <section class="section" id="space">
+    <div class="space__grid">
+      <div class="space__imgs">
+        <div class="im tall" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/be5e2d0b113f4a4ea3477b3ffc1f7913.jpeg')"></div>
+        <div class="im" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/93f93a36e88e8c72678857ebd018967f.jpeg')"></div>
+        <div class="im" style="background-image:url('https://b.zmtcdn.com/data/pictures/chains/5/21351995/a2507cd1ac667ecf1abc4a0ecd811523.jpg')"></div>
+      </div>
+      <div class="space__t">
+        <p class="eyebrow">The space</p>
+        <h2>Murals, plants &amp; good light.</h2>
+        <p>Kyfesto is full of character — bold wall art, hanging plants, warm light and seating you'll actually want to linger in. Indoor when it's hot, open-air when the evening's nice.</p>
+        <p>It's the kind of place that's easy to love: chill enough to work, pretty enough for a date, fun enough to bring the whole gang.</p>
+        <div class="mini">
+          <span class="tag t1">🌿 Plants &amp; light</span>
+          <span class="tag t2">💻 Work-friendly</span>
+          <span class="tag t3">🎶 Indie music</span>
+          <span class="tag t4">📸 Instagrammable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="head"><p class="eyebrow">Fan favourites</p><h2>Straight from the counter</h2></div>
+    <div class="peek">
+      <div class="pc"><div class="img" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/98a/ac730cc3a9c23ab44bd435827993698a_1750581800.jpg')"></div><div class="cap"><h4>Rose Ice Latte</h4><small>Delicate rose + cold espresso</small></div></div>
+      <div class="pc"><div class="img" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/124d78905ab6b4ffb762d17c223203ec.jpeg')"></div><div class="cap"><h4>Exotic Veg Pizza</h4><small>Thin, crisp, loaded fresh</small></div></div>
+      <div class="pc"><div class="img" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/265/9eb86a1556a3146d40ac307effb53265_1750581800.jpg')"></div><div class="cap"><h4>Biscoff Cheesecake</h4><small>Creamy, rich, dreamy</small></div></div>
+      <div class="pc"><div class="img" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/070/b89147a3e626dd800f55d8e3a058b070_1750581800.jpg')"></div><div class="cap"><h4>Crunchy Frappe</h4><small>Coffee crunch, strong base</small></div></div>
+      <div class="pc"><div class="img" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/f42/d9378c9fe83d392032f4acba47f20f42_1750266444.jpeg')"></div><div class="cap"><h4>Falafel &amp; Hummus</h4><small>Crisp, fresh, Mediterranean</small></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="menu" style="padding-top:0">
+    <div class="head"><p class="eyebrow">The menu</p><h2>What people keep ordering</h2><p class="lede">Specialty coffee and globally-inspired plates — Italian, Mexican, Lebanese and brunch all day.</p></div>
+    <h3 class="cat">Coffee &amp; coolers</h3>
+    <div class="menu__grid">
+      <div class="dish"><div><h4>Rose Ice Latte</h4><p>Delicate rose over cold espresso.</p></div><span class="t">Signature</span></div>
+      <div class="dish"><div><h4>Crunchy Frappe</h4><p>Coffee crunch, strong espresso base.</p></div><span class="t">Loved</span></div>
+      <div class="dish"><div><h4>Hazelnut Cappuccino</h4><p>Strong, foamy, velvety.</p></div><span class="t">Classic</span></div>
+      <div class="dish"><div><h4>Orange / Apple Mojito</h4><p>Fizzy, citrusy and minty.</p></div><span class="t">Cooler</span></div>
+    </div>
+    <h3 class="cat">Plates &amp; brunch</h3>
+    <div class="menu__grid">
+      <div class="dish"><div><h4>Zucchini Cannelloni Florentina</h4><p>Creamy spinach, light cheese, tomato.</p></div><span class="t">Gourmet</span></div>
+      <div class="dish"><div><h4>Falafel with Hummus</h4><p>Crisp falafel, garlicky hummus, pita.</p></div><span class="t">Mediterranean</span></div>
+      <div class="dish"><div><h4>Exotic Veg Pizza</h4><p>Peppers, olives, mushrooms, jalapeños.</p></div><span class="t">Wood-fire</span></div>
+      <div class="dish"><div><h4>Mexican Cottage Cheese Balls</h4><p>Crisp outside, spicy creamy paneer.</p></div><span class="t">Spicy</span></div>
+      <div class="dish"><div><h4>Banana Nutella Pancakes</h4><p>Warm, fluffy, gooey, fresh banana.</p></div><span class="t">Brunch</span></div>
+      <div class="dish"><div><h4>Biscoff Cheesecake</h4><p>Creamy, rich, melt-in-the-mouth.</p></div><span class="t">Dessert</span></div>
+    </div>
+    <p class="note">₹1,000 for two · all-day breakfast · Wi-Fi · vegetarian-friendly · indoor &amp; open-air</p>
+  </section>
+
+  <section class="section" id="gallery">
+    <div class="head"><p class="eyebrow">Real moments</p><h2>Snapped at Kyfesto</h2></div>
+    <div class="gallery">
+      <div class="g w2 h2" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/be5e2d0b113f4a4ea3477b3ffc1f7913.jpeg')"></div>
+      <div class="g" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/124d78905ab6b4ffb762d17c223203ec.jpeg')"></div>
+      <div class="g" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/93f93a36e88e8c72678857ebd018967f.jpeg')"></div>
+      <div class="g" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/265/9eb86a1556a3146d40ac307effb53265_1750581800.jpg')"></div>
+      <div class="g w2" style="background-image:url('https://b.zmtcdn.com/data/pictures/5/21351995/72d009f6cad4233920136128e489ddb8.jpeg')"></div>
+      <div class="g" style="background-image:url('https://b.zmtcdn.com/data/pictures/chains/5/21351995/a2507cd1ac667ecf1abc4a0ecd811523.jpg')"></div>
+      <div class="g" style="background-image:url('https://b.zmtcdn.com/data/reviews_photos/070/b89147a3e626dd800f55d8e3a058b070_1750581800.jpg')"></div>
+    </div>
+    <div class="ig"><a href="https://www.instagram.com/kyfestocafe/" target="_blank" rel="noopener" class="btn btn--soft">Follow @kyfestocafe</a></div>
+    <p class="note">Real photos from Kyfesto's listings — swap for your own anytime.</p>
+  </section>
+
+  <section class="section" id="reserve">
+    <div class="reserve">
+      <div class="reserve__intro">
+        <p class="eyebrow">Save a seat</p><h2>Reserve a table</h2>
+        <p>Tell us when you're coming and we'll keep a cosy spot ready.</p>
+      </div>
+      <form class="rform" id="rform" novalidate>
+        <div class="field"><label for="rn">Name</label><input id="rn" type="text" required placeholder="Your name" /></div>
+        <div class="field"><label for="rp">Phone</label><input id="rp" type="tel" required placeholder="+91 …" /></div>
+        <div class="field"><label for="rd">Date</label><input id="rd" type="date" required /></div>
+        <div class="field"><label for="rt">Time</label><input id="rt" type="time" required /></div>
+        <div class="field"><label for="rg">Guests</label><select id="rg"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7+</option></select></div>
+        <div class="field"><label for="ro">Occasion <span>(optional)</span></label><input id="ro" type="text" placeholder="Date, work, birthday…" /></div>
+        <button type="submit" class="btn btn--fill sub">Request reservation</button>
+        <p class="fallback">Prefer to call? <a href="tel:+919887300040">+91 98873 00040</a> · <a href="https://wa.me/919887300040" target="_blank" rel="noopener">WhatsApp</a></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section" id="visit">
+    <div class="head"><p class="eyebrow">Find us</p><h2>Come say hi</h2></div>
+    <div class="visit">
+      <div>
+        <div class="row"><h4>Address</h4><p>31, Sahakar Marg, Near Bais Godam Flyover,<br/>Sudarshan Enclave, C-Scheme, Lalkothi,<br/>Jaipur, Rajasthan 302006</p><a href="https://www.google.com/maps?q=26.9004127,75.7930438" target="_blank" rel="noopener">Get directions →</a></div>
+        <div class="row"><h4>Hours</h4><p>Open daily · 9:00 AM – 10:30 PM</p></div>
+        <div class="row"><h4>Contact</h4><p><a href="tel:+919887300040">+91 98873 00040</a><br/><a href="mailto:hello@kyfesto.com">hello@kyfesto.com</a></p></div>
+        <div class="row"><h4>Order in</h4><p><a href="https://www.zomato.com/jaipur/kyfesto-cafe-bais-godam" target="_blank" rel="noopener">Zomato</a> · <a href="https://www.swiggy.com" target="_blank" rel="noopener">Swiggy</a></p></div>
+        <div class="row"><h4>Follow</h4><p><a href="https://www.instagram.com/kyfestocafe/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/p/Kyfesto-Cafe-61560320127891/" target="_blank" rel="noopener">Facebook</a></p></div>
+      </div>
+      <div class="map"><iframe title="Kyfesto Cafe map" src="https://www.google.com/maps?q=26.9004127,75.7930438&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__brand">Kyfesto<span>.</span></div>
+    <p class="footer__tag">Top-tier brews, gourmet bites, colourful vibes.</p>
+    <p class="footer__meta">31, Sahakar Marg, C-Scheme, Jaipur 302006 · +91 98873 00040 · Open daily 9:00–22:30</p>
+    <p class="footer__copy">© <span id="yr"></span> Kyfesto Cafe, Jaipur.</p>
+  </footer>
+</main>
+
+<div class="actionbar">
+  <a href="#reserve">Reserve</a>
+  <a href="tel:+919887300040">Call</a>
+  <a href="https://www.google.com/maps?q=26.9004127,75.7930438" target="_blank" rel="noopener">Directions</a>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var nav=document.getElementById("nav");
+  window.addEventListener("scroll",function(){nav.classList.toggle("scrolled",window.scrollY>50);},{passive:true});
+
+  var burger=document.getElementById("burger"), navm=document.getElementById("navm");
+  burger.addEventListener("click",function(){var o=navm.classList.toggle("open");burger.classList.toggle("open",o);});
+  navm.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){navm.classList.remove("open");burger.classList.remove("open");});});
+
+  var y=document.getElementById("yr"); if(y) y.textContent=new Date().getFullYear();
+
+  var f=document.getElementById("rform"), toast=document.getElementById("toast");
+  function t(m){toast.textContent=m;toast.classList.add("show");setTimeout(function(){toast.classList.remove("show");},4200);}
+  var rd=document.getElementById("rd"); if(rd) rd.min=new Date().toISOString().split("T")[0];
+  if(f) f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var d={n:rn.value.trim(),p:rp.value.trim(),date:rd.value,time:rt.value,g:rg.value,o:ro.value.trim()};
+    if(!d.n||!d.p||!d.date||!d.time){t("Please fill name, phone, date and time.");return;}
+    var msg="Hello Kyfesto! I'd like to reserve a table.%0AName: "+encodeURIComponent(d.n)+"%0APhone: "+encodeURIComponent(d.p)+"%0ADate: "+encodeURIComponent(d.date)+"%0ATime: "+encodeURIComponent(d.time)+"%0AGuests: "+encodeURIComponent(d.g)+(d.o?"%0AOccasion: "+encodeURIComponent(d.o):"");
+    t("Opening WhatsApp to confirm…");
+    setTimeout(function(){window.open("https://wa.me/919887300040?text="+msg,"_blank");},600);
+    f.reset();
+  });
+})();
+</script>
+</body>
+</html>
